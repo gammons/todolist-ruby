@@ -1,5 +1,7 @@
 module Todo
   class App
+    PADDING = 3
+
     def initialize
       @store = Store.new
       @store.load
@@ -46,30 +48,56 @@ module Todo
 
     def list_todos(args)
       filtered = Filter.new(@store.todos, args).filter
-      $stdout << "#\t[ ]\tProjects\tContexts:\tDue:\tSubject\n"
+
+      longest_projects = find_longest_projects + PADDING
+      longest_contexts = find_longest_contexts + PADDING
+      longest_subject = find_longest_subject + PADDING
+
       filtered.each_with_index do |todo, i|
-        output = "#{todo.id}:\t"
-        output += list_completed(todo) + "\t"
-        output += list_projects(todo) + "\t"
-        output += list_contexts(todo) + "\t"
-        output += todo.due.to_s.colorize(:blue) + "\t"
-        output += todo.subject.colorize(:yellow) + "\n"
-        $stdout << output
+        printf "%-3s %-5s %-#{longest_projects}s %-#{longest_contexts}s %-10s %s\n",
+          todo.id,
+          format_completed(todo),
+          format_projects(todo),
+          format_contexts(todo),
+          format_due(todo),
+          format_subject(todo)
       end
     end
 
     private
 
-    def list_completed(todo)
+    def find_longest_projects
+      @store.todos.map {|t| format_projects(t).length }.max
+    end
+
+    def find_longest_contexts
+      @store.todos.map {|t| format_contexts(t).length }.max
+    end
+
+    def find_longest_subject
+      @store.todos.map {|t| format_subject(t).length }.max
+    end
+
+    def format_completed(todo)
       todo.completed ? "[x]" : "[ ]"
     end
 
-    def list_projects(todo)
-      "[" + todo.projects.join(", ").colorize(:green) + "]"
+    def format_projects(todo)
+      return "" if todo.projects.empty?
+      "[" + todo.projects.join(", ") + "]"
     end
 
-    def list_contexts(todo)
-      "(" + todo.contexts.join(", ").colorize(:cyan) + ")"
+    def format_contexts(todo)
+      return "" if todo.contexts.empty?
+      "(" + todo.contexts.join(", ") + ")"
+    end
+
+    def format_due(todo)
+      todo.due.to_s.colorize(:blue)
+    end
+
+    def format_subject(todo)
+      todo.subject.colorize(:yellow)
     end
   end
 end

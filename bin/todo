@@ -21,7 +21,6 @@ class TodoBinary
   end
 
   def route_input(input)
-    puts "input is '#{input}'"
     case input.split[0]
     when "a", "add"
       @app.create_todo(input.sub(/(a|add)/, ''))
