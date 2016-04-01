@@ -31,14 +31,6 @@ module Todo
       @todos = @todos.select {|t| t.due && (Date.parse(t.due) >= from) && (Date.parse(t.due) <= to) }
     end
 
-    # todo list +proj @context
-    # due today
-    # due this week
-    # due next week
-    # due tom
-    #
-
-
     def parse_date_range
       date_str = @input.split("due ").last
       case date_str
@@ -56,6 +48,9 @@ module Todo
         [Date.today + 1, Date.today + 1]
       when "tod","today"
         [Date.today, Date.today]
+      else
+        d = Chronic.parse(date_str).to_date
+        [d,d]
       end
     end
   end
