@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/todo-cli'
+require 'optparse'
+
+class TodoBinary
+  def initialize
+    @app = Todo::App.new
+  end
+
+  def repl
+    while true do
+      $stdout << "todo> ".colorize(:cyan)
+
+      input = gets.chomp
+
+      $stdout << "\n"
+      route_input(input)
+      $stdout << "\n"
+    end
+  end
+
+  def route_input(input)
+    puts "input is '#{input}'"
+    case input.split[0]
+    when "a", "add"
+      @app.create_todo(input.sub(/(a|add)/, ''))
+    when "d", "del"
+      @app.delete_todo(input.sub(/(d|del)/, ''))
+    when "c", "complete"
+      @app.complete_todo(input.sub(/(c|complete)/, ''))
+    when "u", "uncomplete"
+      @app.uncomplete_todo(input.sub(/(u|uncomplete)/, ''))
+    when "l", "list"
+      @app.list_todos(input)
+    when "t", "today"
+      @app.list_todos("l due today")
+    else
+      repl
+    end
+  end
+end
+
+TodoBinary.new.route_input(ARGV.join(' '))
