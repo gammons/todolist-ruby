@@ -29,10 +29,9 @@ class TodoBinary
       @app.list_todos(input)
     when "t", "today"
       @app.list_todos("l due today")
-    else
-      repl
     end
   end
 end
 
-TodoBinary.new.route_input(ARGV.join(' '))
+binary = TodoBinary.new
+(ARGV.size == 0) ? binary.repl : binary.route_input(ARGV.join(' '))
