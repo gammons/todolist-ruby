@@ -49,8 +49,9 @@ module Todo
       when "tod","today"
         [Date.today, Date.today]
       else
-        d = Chronic.parse(date_str).to_date
-        [d,d]
+        d = Chronic.parse(date_str)
+        return if d.nil?
+        [d.to_date,d.to_date]
       end
     end
   end
