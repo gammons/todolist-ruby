@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require_relative '../lib/todo-cli'
-require 'optparse'
 
 class TodoBinary
   def initialize
@@ -9,14 +8,8 @@ class TodoBinary
   end
 
   def repl
-    while true do
-      $stdout << "todo> ".colorize(:cyan)
-
-      input = gets.chomp
-
-      $stdout << "\n"
-      route_input(input)
-      $stdout << "\n"
+    while line = Readline.readline("todo> ".colorize(:cyan), true)
+      route_input(line)
     end
   end
 
@@ -26,6 +19,8 @@ class TodoBinary
       @app.create_todo(input.sub(/(a|add)/, ''))
     when "d", "del"
       @app.delete_todo(input.sub(/(d|del)/, ''))
+    when "e", "edit"
+      @app.edit_todo(input.sub(/(e|edit)/, ''))
     when "c", "complete"
       @app.complete_todo(input.sub(/(c|complete)/, ''))
     when "u", "uncomplete"

@@ -1,6 +1,7 @@
 require 'json'
 require 'chronic'
 require 'colorize'
+require 'readline'
 
 require_relative 'todo-cli/item'
 require_relative 'todo-cli/parser'
