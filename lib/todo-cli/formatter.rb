@@ -26,19 +26,19 @@ module Todo
     private
 
     def find_longest_projects
-      @todos.map {|t| format_projects(t).length }.max
+      @todos.map {|t| format_projects(t).length }.max || 0
     end
 
     def find_longest_contexts
-      @todos.map {|t| format_contexts(t).length }.max
+      @todos.map {|t| format_contexts(t).length }.max || 0
     end
 
     def find_longest_subject
-      @todos.map {|t| format_subject(t).length }.max
+      @todos.map {|t| format_subject(t).length }.max || 0
     end
 
     def find_longest_due
-      @todos.map {|t| format_due(t).length }.max
+      @todos.map {|t| format_due(t).length }.max || 0
     end
 
     def format_completed(todo)
