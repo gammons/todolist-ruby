@@ -17,6 +17,10 @@ module Todo
       end
     end
 
+    def find(id)
+      @todos.find {|t| t.id.to_i == id.to_i }
+    end
+
     def save
       file = File.open(File.expand_path(default_file_loc),"w")
       file << @todos.map {|t| t.to_hash }.to_json
@@ -28,17 +32,21 @@ module Todo
       @todos << todo_item
     end
 
+    def add!(todo_item)
+      add(todo_item)
+      save
+    end
+
     def remove(todo_item)
       @todos.reject! {|t| t == todo_item }
     end
 
-    # due today
-    # by project
-    # by context
-    #
-    def filter(args)
-
+    def remove!(todo_item)
+      remove(todo_item)
+      save
     end
+
+    private
 
     def read_todos(data)
       @todos = []
