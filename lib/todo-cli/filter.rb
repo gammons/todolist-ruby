@@ -10,7 +10,30 @@ module Todo
       filter_projects
       filter_contexts
       filter_date
-      @todos
+      group
+    end
+
+    # by p
+    # by c
+    def group
+      g = nil
+      @input.scan(/by \w+/) {|m| g = m.gsub(/by /,'') }
+      case g
+      when "p","project"
+        all_projects = @todos.map {|t| t.projects }.flatten.uniq
+        all_projects.map  do |proj|
+          {proj => @todos.select {|t| t.projects.include?(proj) } }
+        end
+      when "c","context"
+        all_contexts = @todos.map {|t| t.contexts }.flatten.uniq
+        all_contexts.map  do |cont|
+          {cont => @todos.select {|t| t.contexts.include?(cont) } }
+        end
+      end
+    end
+
+    def grouped?
+      @input.scan(/by \w+/).size > 0
     end
 
     def filter_projects

@@ -54,8 +54,13 @@ module Todo
 
 
     def list_todos(args)
-      filtered = Filter.new(@store.todos, args).filter
-      Formatter.new(filtered).print!
+      filter = Filter.new(@store.todos, args)
+      filtered = filter.filter
+      if filter.grouped?
+        GroupedFormatter.new(filtered).print!
+      else
+        Formatter.new(filtered).print!
+      end
     end
   end
 end
