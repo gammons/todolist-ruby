@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'todo-cli/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "todo-cli"
+  spec.name          = "todolist"
   spec.version       = Todo::VERSION
   spec.authors       = ["Grant Ammons"]
   spec.email         = ["gammons@gmail.com"]
 
-  spec.summary       = %q{todo-cli is a simple, GTD-style todo list for the command line.}
+  spec.summary       = %q{todolist is a simple, GTD-style todo list for the command line.}
   spec.description   = %q{Write a longer description or delete this line.}
-  spec.homepage      = "https://github.com/gammons/todo-cli"
+  spec.homepage      = "https://github.com/gammons/todolist"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "chronic"
-  spec.add_dependency "colorize"
+  spec.add_dependency "colored"
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
