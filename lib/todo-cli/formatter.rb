@@ -12,7 +12,6 @@ module Todo
       longest_subject = find_longest_subject + PADDING
       longest_due = find_longest_due + PADDING
 
-      $stdout << "\n"
       @todos.each_with_index do |todo, i|
         printf "\t%-3s %-5s %-#{longest_projects}s %-#{longest_contexts}s %-#{longest_due}s %s\n",
           todo.id,
@@ -60,11 +59,11 @@ module Todo
     def format_due(todo)
       case todo.due
       when Date.today.to_s
-        "today".colorize(:blue)
+        "today".blue
       when (Date.today + 1).to_s
-        "tomorrow".colorize(:blue)
+        "tomorrow".blue
       else
-        todo.due.to_s.colorize(:blue)
+        todo.due.to_s.blue
       end
     end
 
@@ -72,11 +71,11 @@ module Todo
       todo.subject.split(' ').map {|word|
         case
         when word =~ /\@\w+/
-          word.colorize(:magenta)
+          word.magenta
         when word =~ /\+\w+/
-          word.colorize(:red)
+          word.red
         else
-          word.colorize(:yellow)
+          word.yellow
         end
       }.join(' ')
     end

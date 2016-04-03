@@ -2,7 +2,7 @@
 source "https://rubygems.org"
 
 gem 'chronic'
-gem 'colorize'
+gem 'colored'
 
 group :test do
   gem 'byebug'
