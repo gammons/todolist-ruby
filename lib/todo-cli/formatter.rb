@@ -79,7 +79,6 @@ module Todo
           word.colorize(:yellow)
         end
       }.join(' ')
-      #todo.subject.colorize(:yellow)
     end
   end
 end
