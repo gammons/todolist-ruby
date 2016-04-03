@@ -7,7 +7,7 @@ module Todo
     def print!
       @todos.each do |grouping|
         $stdout << "\n"
-        $stdout << "\t#{grouping.keys.first}:\n".light_green.bold
+        $stdout << "\t#{grouping.keys.first}:\n".cyan.bold
         Formatter.new(grouping[grouping.keys.first]).print!
       end
     end
