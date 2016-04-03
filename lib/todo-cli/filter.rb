@@ -13,22 +13,12 @@ module Todo
       group
     end
 
-    # by p
-    # by c
     def group
       g = nil
       @input.scan(/by \w+/) {|m| g = m.gsub(/by /,'') }
       case g
-      when "p","project"
-        all_projects = @todos.map {|t| t.projects }.flatten.uniq
-        all_projects.map  do |proj|
-          {proj => @todos.select {|t| t.projects.include?(proj) } }
-        end
-      when "c","context"
-        all_contexts = @todos.map {|t| t.contexts }.flatten.uniq
-        all_contexts.map  do |cont|
-          {cont => @todos.select {|t| t.contexts.include?(cont) } }
-        end
+      when "p","project" then group_by_project
+      when "c","context" then group_by_context
       else
         @todos
       end
@@ -78,6 +68,30 @@ module Todo
         return if d.nil?
         [d.to_date,d.to_date]
       end
+    end
+
+    private
+
+    def group_by_project
+      all_projects = @todos.map {|t| t.projects }.flatten.uniq
+      grouped = all_projects.map  do |proj|
+        {proj => @todos.select {|t| t.projects.include?(proj) } }
+      end
+      if @todos.any? {|t| t.projects.size == 0 }
+        grouped << {"No Project" => @todos.select {|t| t.projects.size == 0 } }
+      end
+      grouped
+    end
+
+    def group_by_context
+      all_contexts = @todos.map {|t| t.contexts }.flatten.uniq
+      grouped = all_contexts.map  do |cont|
+        {cont => @todos.select {|t| t.contexts.include?(cont) } }
+      end
+      if @todos.any? {|t| t.contexts.size == 0 }
+        grouped << {"No Context" => @todos.select {|t| t.contexts.size == 0 } }
+      end
+      grouped
     end
   end
 end
