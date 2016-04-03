@@ -29,6 +29,8 @@ module Todo
         all_contexts.map  do |cont|
           {cont => @todos.select {|t| t.contexts.include?(cont) } }
         end
+      else
+        @todos
       end
     end
 
