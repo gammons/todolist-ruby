@@ -12,7 +12,7 @@ class TodoBinary
   def route_input(input)
     case input.split[0]
     when "ac"
-      @app.archive_completed(input.sub(/(a|add)/, ''))
+      @app.archive_completed
     when "a", "add"
       @app.create_todo(input.sub(/(a|add)/, ''))
     when "d", "del"

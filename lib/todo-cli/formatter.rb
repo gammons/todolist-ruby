@@ -63,7 +63,11 @@ module Todo
       when (Date.today + 1).to_s
         "tomorrow".blue
       else
-        todo.due.to_s.blue
+        if todo.due && Date.parse(todo.due) < Date.today
+          todo.due.to_s.red.bold
+        else
+          todo.due.to_s.blue
+        end
       end
     end
 

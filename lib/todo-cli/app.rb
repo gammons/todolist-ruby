@@ -33,6 +33,7 @@ module Todo
 
     def archive_completed
       @store.todos.select {|t| t.completed? }.each {|t| t.archive }
+      @store.save
       $stdout << "All completed todos have been archived.\n"
     end
 
