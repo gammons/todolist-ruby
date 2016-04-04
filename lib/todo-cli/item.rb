@@ -1,14 +1,31 @@
 module Todo
   class Item
-    attr_accessor :id, :subject, :projects, :contexts, :due, :completed
+    attr_accessor :id, :subject, :projects, :contexts, :due, :completed, :archived
 
     def initialize
       projects, contexts = [],[]
       completed = false
+      archived = false
     end
 
     def valid?
       @subject != nil && @subject != ''
+    end
+
+    def completed?
+      @completed
+    end
+
+    def archived?
+      @archived
+    end
+
+    def archive
+      @archived = true
+    end
+
+    def unarchive
+      @archived = false
     end
 
     def mark_complete
@@ -26,10 +43,19 @@ module Todo
       @contexts = hash.fetch(:contexts, nil) || hash.fetch("contexts")
       @due = hash.fetch(:due, nil) || hash.fetch("due")
       @completed = hash.fetch(:completed, nil) || hash.fetch("completed")
+      @archived = hash.fetch(:archived, nil) || hash.fetch("archived", false)
     end
 
     def to_hash
-      {subject: subject, projects: projects, contexts: contexts, due: due, completed: completed, id: id}
+      {
+        subject: subject,
+        projects: projects,
+        contexts: contexts,
+        due: due,
+        completed: completed,
+        id: id,
+        archived: archived
+      }
     end
   end
 end

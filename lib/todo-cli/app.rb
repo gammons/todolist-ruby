@@ -31,6 +31,22 @@ module Todo
       end
     end
 
+    def archive_completed
+      @store.todos.select {|t| t.completed? }.each {|t| t.archive }
+      $stdout << "All completed todos have been archived.\n"
+    end
+
+    def archive_todo(id)
+      todo = @store.find(id)
+      if todo
+        todo.archive
+        @store.save
+        $stdout << "Todo archived.\n"
+      else
+        $stdout << "Todo not found.\n"
+      end
+    end
+
     def uncomplete_todo(id)
       todo = @store.find(id)
       if todo

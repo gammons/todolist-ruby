@@ -7,18 +7,18 @@ class TodoBinary
     @app = Todo::App.new
   end
 
-  def repl
-    while line = Readline.readline("todo> ".colorize(:cyan), true)
-      route_input(line)
-    end
-  end
+
 
   def route_input(input)
     case input.split[0]
+    when "ac"
+      @app.archive_completed(input.sub(/(a|add)/, ''))
     when "a", "add"
       @app.create_todo(input.sub(/(a|add)/, ''))
     when "d", "del"
       @app.delete_todo(input.sub(/(d|del)/, ''))
+    when "ar", "archive"
+      @app.archive_todo(input.sub(/(ar|archive)/, ''))
     when "e", "edit"
       @app.edit_todo(input.sub(/(e|edit)/, ''))
     when "c", "complete"
@@ -29,9 +29,42 @@ class TodoBinary
       @app.list_todos(input)
     when "t", "today"
       @app.list_todos("l due today")
+    when "repl"
+      repl
+    else
+      display_help
     end
+  end
+
+  def repl
+    while line = Readline.readline("todo> ".colorize(:cyan), true)
+      route_input(line)
+    end
+  end
+
+  def display_help
+    puts "todolist - a simple command line GTD-style todo list app"
+
+    puts "# List todos"
+    puts "todo l         : list all todos"
+    puts "todo t         : shortcut for 'todo l due today'"
+    puts "todo l by c    : list todos by context"
+    puts "todo l by p    : list todos by project"
+    puts "todo l due <due> : list todos due "
+    puts "todo l past    : list todos past due"
+    puts ""
+    puts "# Adding a todo"
+    puts "todo a <details> : add todo"
+    puts "Example: todo a call @bob about the +project due tomorrow"
+    puts ""
+    puts "# other actions"
+    puts "todo ac     : archive all completed todos"
+    puts "todo ar <n> : archive todo by id"
+    puts "todo c <n>  : complete todo by id"
+    puts "todo u <n>  : uncomplete todo by id"
+    puts "todo d <n>  : delete todo by id"
+    puts "todo ar <n> : archive todo by id"
   end
 end
 
-binary = TodoBinary.new
-(ARGV.size == 0) ? binary.repl : binary.route_input(ARGV.join(' '))
+TodoBinary.new.route_input(ARGV.join(' '))

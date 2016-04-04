@@ -6,7 +6,8 @@ module Todo
     end
 
     def filter
-      return @todos if @input.nil?
+      return todos if @input.nil?
+      filter_archived
       filter_projects
       filter_contexts
       filter_date
@@ -92,6 +93,19 @@ module Todo
         grouped << {"No Context" => @todos.select {|t| t.contexts.size == 0 } }
       end
       grouped
+    end
+
+    def filter_archived
+      archived = @input.split(' ').last == 'archived'
+      archived ? archived_todos : unarchived_todos
+    end
+
+    def archived_todos
+      @todos = @todos.select {|t| t.archived? }
+    end
+
+    def unarchived_todos
+      @todos = @todos.select {|t| !t.archived? }
     end
   end
 end

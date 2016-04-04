@@ -46,8 +46,6 @@ module Todo
       save
     end
 
-    private
-
     def read_todos(data)
       @todos = []
       JSON.parse(data).each do |todo|
