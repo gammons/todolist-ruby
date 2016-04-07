@@ -16,8 +16,21 @@ module Todo
       end
     end
 
-    def edit_todo(id)
+    def edit_todo(args)
+      id = args.split(' ')[0]
+      to_edit = args.sub(/\d+/,'')
+
       todo = @store.find(id)
+      if todo
+        case to_edit.split(' ')[0]
+        when "due"
+          todo.due = Parser.new.due(to_edit)
+          @store.save
+          $stdout << "Due date updated.\n"
+        end
+      else
+        $stdout << "Todo not found.\n"
+      end
     end
 
     def complete_todo(id)
