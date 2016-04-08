@@ -7,14 +7,14 @@ module Todo
     end
 
     def print!
-      printf "\t%-3s %-5s %-#{@widths.project_width + PADDING}s %-#{@widths.context_width + PADDING}s %-#{@widths.due_width + PADDING}s %s\n",
-      @todo.id,
-        format_completed,
-        format_projects,
-        format_contexts,
-        format_due,
-        format_subject
+      $stdout << "\t#{print_id}" + (" " * PADDING)
+      $stdout << format_completed + (" " * PADDING)
+      $stdout << print_projects + (" " * PADDING)
+      $stdout << print_contexts + (" " * PADDING)
+      $stdout << print_due + (" " * PADDING)
+      $stdout << format_subject + " \n"
     end
+
 
     def format_completed
       @todo.completed ? "[x]" : "[ ]"
@@ -38,7 +38,7 @@ module Todo
         "tomorrow".blue
       else
         if @todo.due && Date.parse(@todo.due) < Date.today
-          @todo.due.to_s.red.bold
+          @todo.due.to_s.red
         else
           @todo.due.to_s.blue
         end
@@ -56,6 +56,28 @@ module Todo
           word.yellow
         end
       }.join(' ')
+    end
+
+    private
+
+    def print_id
+      spaces = 3 - @todo.id.to_s.length
+      @todo.id.to_s + (" " * spaces)
+    end
+
+    def print_projects
+      spaces = @widths.project_width - format_projects.length
+      format_projects + (" " * spaces)
+    end
+
+    def print_contexts
+      spaces = @widths.context_width - format_contexts.length
+      format_contexts + (" " * spaces)
+    end
+
+    def print_due
+      spaces = @widths.due_width - format_due.length
+      format_due + (" " * spaces)
     end
   end
 end

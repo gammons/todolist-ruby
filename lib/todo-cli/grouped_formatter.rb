@@ -9,7 +9,6 @@ module Todo
       widths.calculate_widths
 
       @todos.each do |grouping|
-        $stdout << "\n"
         $stdout << "\t#{grouping.keys.first}:\n".cyan.bold
         Formatter.new(grouping[grouping.keys.first], widths).print!
       end
